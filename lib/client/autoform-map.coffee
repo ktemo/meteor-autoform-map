@@ -141,7 +141,7 @@ Template.afMap.events
 		@loading.set true
 		navigator.geolocation.getCurrentPosition (position) =>
 			location = new google.maps.LatLng position.coords.latitude, position.coords.longitude
-			@setMarker @map, location, @options.zoom
+			@setMarker @map, location, @data.options.zoom
 			@map.setCenter location
 			@loading.set false
 
