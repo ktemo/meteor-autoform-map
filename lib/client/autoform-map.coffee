@@ -138,11 +138,12 @@ Template.afMap.events
 
 		unless navigator.geolocation then return false
 
+		t = Template.instance()
 		@loading.set true
 		navigator.geolocation.getCurrentPosition (position) =>
 			location = new google.maps.LatLng position.coords.latitude, position.coords.longitude
-			@setMarker @map, location, @data.options.zoom
-			@map.setCenter location
+			t.setMarker t.map, location, t.options.zoom
+			t.map.setCenter location
 			@loading.set false
 
 	'keydown .js-search': (e) ->
