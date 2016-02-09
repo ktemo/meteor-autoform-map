@@ -100,6 +100,10 @@ initTemplateAndGoogleMaps = ->
 	google.maps.event.addListener @map, 'click', (e) =>
 		@setMarker @map, e.latLng
 
+	google.maps.event.addListener @map, 'tilesloaded', (e) =>
+		if typeof @data.atts.tilesloaded == 'function'
+			@data.atts.tilesloaded
+
 	@$('.js-map').closest('form').on 'reset', =>
 		@data.marker and @data.marker.setMap null
 		@map.setCenter new google.maps.LatLng @options.defaultLat, @options.defaultLng
