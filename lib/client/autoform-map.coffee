@@ -62,6 +62,14 @@ initTemplateAndGoogleMaps = ->
 		if zoom > 0
 			@map.setZoom zoom
 
+	@startLoading = () =>
+		if typeof @data.atts.startLoading == 'function'
+			@data.atts.startLoading
+
+	@finishLoading = () =>
+		if typeof @data.atts.finishLoading == 'function'
+			@finishLoading = @data.atts.finishLoading
+
 	mapOptions =
 		zoom: 0
 		mapTypeId: google.maps.MapTypeId[@options.mapType]
@@ -98,7 +106,8 @@ initTemplateAndGoogleMaps = ->
 		@data.atts.rendered @map
 
 	google.maps.event.addListener @map, 'click', (e) =>
-		@setMarker @map, e.latLng
+		unless @loading.set
+			@setMarker @map, e.latLng
 
 	google.maps.event.addListener @map, 'tilesloaded', (e) =>
 		if typeof @data.atts.tilesloaded == 'function'
@@ -143,8 +152,12 @@ Template.afMap.events
 		unless navigator.geolocation then return false
 
 		t = Template.instance()
+		t.startLoading()
+
 		@loading.set true
 		navigator.geolocation.getCurrentPosition (position) =>
+			t.finishLoading()
+
 			location = new google.maps.LatLng position.coords.latitude, position.coords.longitude
 			t.setMarker t.map, location, t.options.zoom
 			t.map.setCenter location
