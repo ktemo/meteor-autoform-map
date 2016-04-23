@@ -106,7 +106,7 @@ initTemplateAndGoogleMaps = ->
 		@data.atts.rendered @map
 
 	google.maps.event.addListener @map, 'click', (e) =>
-		unless @loading.set
+		unless @loading and @loading.set
 			@setMarker @map, e.latLng
 
 	google.maps.event.addListener @map, 'tilesloaded', (e) =>
